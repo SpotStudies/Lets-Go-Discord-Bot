@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, IntentsBitField } = require('discord.js');
+const { Client, IntentsBitField, EmbedBuilder } = require('discord.js');
 
 const client = new Client({
   intents: [
@@ -23,6 +23,50 @@ client.on('interactionCreate', (interaction) => {
 
     interaction.reply(`The sum is ${num1 + num2}`);
   }
+
+  if (interaction.commandName === 'embed') {
+    const embed = new EmbedBuilder()
+      .setTitle('Embed title')
+      .setDescription('This is an embed description')
+      .setColor('Orange')
+      .addFields(
+        {
+          name: 'Field title',
+          value: 'Some random value',
+          inline: true,
+        },
+        {
+          name: '2nd Field title',
+          value: 'Some random value',
+          inline: true,
+        }
+      );
+
+    interaction.channel.send({ embeds: [embed] });
+  }
+});
+
+client.on('messageCreate', (message) => {
+  if (message.content === 'embed') {
+    const embed = new EmbedBuilder()
+      .setTitle('Embed title')
+      .setDescription('This is an embed description')
+      .setColor('Orange')
+      .addFields(
+        {
+          name: 'Field title',
+          value: 'Some random value',
+          inline: true,
+        },
+        {
+          name: '2nd Field title',
+          value: 'Some random value',
+          inline: true,
+        }
+      );
+
+message.reply({ embeds: [embed] });
+    }
 });
 
 client.login(process.env.TOKEN);
