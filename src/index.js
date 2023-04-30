@@ -1,5 +1,6 @@
 require('dotenv').config();
-const { Client, IntentsBitField, EmbedBuilder } = require('discord.js');
+const { Client, IntentsBitField, EmbedBuilder, ActivityType } = require('discord.js');
+const eventHandler = require('./handlers/eventHandler');
 
 const client = new Client({
   intents: [
@@ -10,63 +11,48 @@ const client = new Client({
   ],
 });
 
+//Status
+/*
+
+let status = [
+  {
+    name: 'Spot Studies',
+    type: ActivityType.Streaming,
+    url: 'https://www.youtube.com/@spotstudies',
+  },
+  {
+    name: 'in Super Mario Kart',
+    type: ActivityType.Competing,
+  },
+  {
+    name: 'Morons',
+    type: ActivityType.Watching,
+  },
+  {
+    name: 'Eespiderman Eespiderman Song',
+    type: ActivityType.Listening,
+  },
+  {
+    name: 'Call of Duty',
+    type: ActivityType.Playing,
+  },
+  {
+    name: 'Reading The Last Straw (DOWK)',
+    type: ActivityType.Custom,
+  },
+];
+
 client.on('ready', (c) => {
   console.log(`✅ ${c.user.tag} is online.`);
-});
 
-client.on('interactionCreate', (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
+  setInterval(() => {
+    let random = Math.floor(Math.random() * status.length);
+    client.user.setActivity(status[random]);
+  }, 12000);
+});*/
 
-  if (interaction.commandName === 'add') {
-    const num1 = interaction.options.get('first-number').value;
-    const num2 = interaction.options.get('second-number').value;
+eventHandler(client);
 
-    interaction.reply(`The sum is ${num1 + num2}`);
-  }
-
-  if (interaction.commandName === 'embed') {
-    const embed = new EmbedBuilder()
-      .setTitle('Embed title')
-      .setDescription('This is an embed description')
-      .setColor('Orange')
-      .addFields(
-        {
-          name: 'Field title',
-          value: 'Some random value',
-          inline: true,
-        },
-        {
-          name: '2nd Field title',
-          value: 'Some random value',
-          inline: true,
-        }
-      );
-
-    interaction.channel.send({ embeds: [embed] });
-  }
-});
-
-client.on('messageCreate', (message) => {
-  if (message.content === 'embed') {
-    const embed = new EmbedBuilder()
-      .setTitle('Embed title')
-      .setDescription('This is an embed description')
-      .setColor('Orange')
-      .addFields(
-        {
-          name: 'Field title',
-          value: 'Some random value',
-          inline: true,
-        },
-        {
-          name: '2nd Field title',
-          value: 'Some random value',
-          inline: true,
-        }
-      );
-
-message.reply({ embeds: [embed] });
-    }
-});
+//Login
 
 client.login(process.env.TOKEN);
